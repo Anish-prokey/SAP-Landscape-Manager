@@ -37,10 +37,7 @@ export default function Header() {
                                 <a className={`nav-link mt-2 mx-5 ${activeNavItem === 'statistics' ? 'active' : ''}`}
                                     onClick={() => handleNavItemClick('statistics')} href="../statistics/index.html" >Statistics</a>
                             </li>
-                            <li class="nav-item">
-                                <a className={`nav-link mt-2 mx-5 ${activeNavItem === 'logs' ? 'active' : ''}`}
-                                    onClick={() => handleNavItemClick('logs')} href="../logs/index.html">Logs</a>
-                            </li>
+                           
                            
 
                         </ul>

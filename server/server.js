@@ -5,10 +5,13 @@ const pdfkit = require('pdfkit');
 const ExcelJS = require('exceljs');
 const cors = require('cors');
 const path = require('path');
-
+const axios = require('axios');
+const bodyParser = require('body-parser')
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+
 
 // Generate PDF and Excel files from static table data and send them as attachments via email
 app.post('/generate-and-send', async (req, res) => {
@@ -76,13 +79,13 @@ app.post('/generate-and-send', async (req, res) => {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Sheet 1');
       worksheet.columns = [
-        { header: 'SAP Product', key: 'sap_prod', width: 20 },
-        { header: 'SAP System ID', key: 'sap_sys_id', width: 20 },
-        { header: 'System Description', key: 'sys_desc', width: 30 },
+        { header: 'SAP Product', key: 'Sapproduct', width: 20 },
+        { header: 'SAP System ID', key: 'Sysid', width: 20 },
+        // { header: 'System Description', key: 'sys_desc', width: 30 },
         { header: 'Type', key: 'Type', width: 20 },
-        { header: 'Environment', key: 'Environment', width: 30 },
-        { header: 'Does it run on a Hana database', key: 'run_hana', width: 30 },
-        { header: 'HANA', key: 'HANA', width: 20 },
+        // { header: 'Environment', key: 'Environment', width: 30 },
+        { header: 'Does it run on a Hana database', key: 'Runhdb', width: 30 },
+        // { header: 'HANA', key: 'HANA', width: 20 },
       ];
       tableData.forEach((row) => {
         worksheet.addRow(row);
@@ -128,6 +131,36 @@ app.post('/generate-and-send', async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
+// app.get('/api/tables/:sapSystemId', async (req, res) => {
+//   const { sapSystemId } = req.params;
+
+//   // Load the Excel file
+//   const workbook = new ExcelJS.Workbook();
+//   await workbook.xlsx.readFile('productinfo.xlsx');
+
+//   // Get the worksheet with the data
+//   const worksheet = workbook.getWorksheet('Sheet1');
+
+//   const rows = [];
+//   worksheet.eachRow((row, rowNumber) => {
+//     if (rowNumber !== 1 && row.getCell(1).value === sapSystemId) {
+//       const rowData = {
+//         SystemID: row.getCell(1).value,
+//         ProductName: row.getCell(2).value,
+//         Version: row.getCell(3).value,
+//         Description: row.getCell(4).value,
+//         ModifiedDate: row.getCell(5).value,
+//         ModifiedTime: row.getCell(6).value,
+//         InstalledYear: row.getCell(7).value,
+       
+//       };
+//       rows.push(rowData);
+//     }
+//   });
+
+//   res.json(rows);
+
+// });
 app.get('/api/tables/:sapSystemId', async (req, res) => {
   const { sapSystemId } = req.params;
 
@@ -149,14 +182,46 @@ app.get('/api/tables/:sapSystemId', async (req, res) => {
         ModifiedDate: row.getCell(5).value,
         ModifiedTime: row.getCell(6).value,
         InstalledYear: row.getCell(7).value,
+        Status: row.getCell(8).value, // Assuming the status is in column 8
       };
+      const date = new Date(rowData.ModifiedTime)
+      const hours = date.getUTCHours().toString().padStart(2, "0");
+      const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+      const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+      const formattedTime = `${hours}:${minutes}:${seconds}`;
+      rowData.ModifiedTime = formattedTime;
+      rowData.ModifiedDate = new Date(rowData.ModifiedDate).toISOString().substring(0,10)
       rows.push(rowData);
     }
   });
 
   res.json(rows);
-
 });
+
+
+// app.use(bodyParser.json());
+
+// let downloadCount = 0;
+// let shareCount = 0;
+
+// app.get('/api/downloadCount', (req, res) => {
+//   res.json({ count: downloadCount });
+// });
+
+// app.get('/api/shareCount', (req, res) => {
+//   res.json({ count: shareCount });
+// });
+
+// app.get('/api/downloadCount', (req, res) => {
+//   downloadCount++;
+//   res.json({ count: downloadCount });
+// });
+
+// app.get('/api/shareCount', (req, res) => {
+//   shareCount++;
+//   res.json({ count: shareCount });
+// });
+
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
