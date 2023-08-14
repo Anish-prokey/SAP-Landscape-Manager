@@ -11,8 +11,8 @@ export default defineConfig({
   root,
   plugins: [react()],
   build:{
-    outDir,
-    emptyOutDir: true,
+    outDir: 'dist',
+    // emptyOutDir: true,
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
