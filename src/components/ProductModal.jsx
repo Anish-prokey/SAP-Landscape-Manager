@@ -25,7 +25,7 @@ const ProductModal = ({ open, handleClose, sapSystemId }) => {
 
         withCredentials: true,
         auth: {
-          username: 'ANISHO',
+          ususername: 'ANISHO',
           password: 'Lowkey@12345',
         },
       });
