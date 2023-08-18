@@ -11,7 +11,7 @@ const ProductModal = ({ open, handleClose, sapSystemId }) => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const response2 = await axios.get(`https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/SysDetailsSet?$filter=(Sysid eq '${sapSystemId}')`, {
+      const response2 = await axios.get(`https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/SysDetailsSet?$filter=(Sysid eq '${sapSystemId}')&sap-client=100`, {
         headers: {
 
           'Content-Type': 'application/json',

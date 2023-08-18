@@ -472,7 +472,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://awsld49ci01.tyson.com:8443/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/LandscapeDetailsSet', {
+        const response = await axios.get('https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/LandscapeDetailsSet?sap-client=100', {
           headers: {
 
             'Content-Type': 'application/json',
@@ -487,8 +487,8 @@ export default function Home() {
           withCredentials: true,
           auth: {
 
-            username: '',
-            password: '',
+            username: 'ANISHO',
+            password: 'Lowkey@12345',
           },
         });
         // setData(response.data.feed.entry.map((item) => ({
