@@ -18,8 +18,8 @@ const ProductModal = ({ open, handleClose, sapSystemId }) => {
           withCredentials: true,
           auth: {
 
-            username: 'ANISHO',
-            password: 'Lowkey@12345',
+            username: 'JA',
+            password: 'AOat1234',
           },
           // Assuming you will handle the authentication server-side,
           // the auth part is removed here.

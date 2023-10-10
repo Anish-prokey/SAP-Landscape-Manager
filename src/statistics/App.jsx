@@ -32,8 +32,8 @@ export default function App() {
 
         withCredentials: true,
         auth: {
-          ususername: 'ANISHO',
-          password: 'Lowkey@12345',
+          ususername: 'JA',
+          password: 'AOat1234',
         },
       });
         // const response = await fetch('https://api.npoint.io/b27397e82bbf3a321651');
