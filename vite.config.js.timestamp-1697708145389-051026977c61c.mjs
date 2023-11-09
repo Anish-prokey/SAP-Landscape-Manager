@@ -1,0 +1,27 @@
+// vite.config.js
+import { resolve } from "path";
+import { defineConfig } from "file:///C:/Users/ANISHO/OneDrive%20-%20Tyson%20Online/Pictures/trail/SAP-Landscape-Manager.github.io/node_modules/vite/dist/node/index.js";
+import react from "file:///C:/Users/ANISHO/OneDrive%20-%20Tyson%20Online/Pictures/trail/SAP-Landscape-Manager.github.io/node_modules/@vitejs/plugin-react/dist/index.mjs";
+var __vite_injected_original_dirname = "C:\\Users\\ANISHO\\OneDrive - Tyson Online\\Pictures\\trail\\SAP-Landscape-Manager.github.io";
+var root = resolve(__vite_injected_original_dirname, "src");
+var outDir = resolve(__vite_injected_original_dirname, "public");
+var vite_config_default = defineConfig({
+  root,
+  plugins: [react()],
+  build: {
+    outDir: "dist",
+    chunkSizeWarningLimit: 1600,
+    // emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(root, "index.html"),
+        statistics: resolve(root, "statistics", "index.html"),
+        logs: resolve(root, "logs", "index.html")
+      }
+    }
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJDOlxcXFxVc2Vyc1xcXFxBTklTSE9cXFxcT25lRHJpdmUgLSBUeXNvbiBPbmxpbmVcXFxcUGljdHVyZXNcXFxcdHJhaWxcXFxcU0FQLUxhbmRzY2FwZS1NYW5hZ2VyLmdpdGh1Yi5pb1wiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9maWxlbmFtZSA9IFwiQzpcXFxcVXNlcnNcXFxcQU5JU0hPXFxcXE9uZURyaXZlIC0gVHlzb24gT25saW5lXFxcXFBpY3R1cmVzXFxcXHRyYWlsXFxcXFNBUC1MYW5kc2NhcGUtTWFuYWdlci5naXRodWIuaW9cXFxcdml0ZS5jb25maWcuanNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL0M6L1VzZXJzL0FOSVNITy9PbmVEcml2ZSUyMC0lMjBUeXNvbiUyME9ubGluZS9QaWN0dXJlcy90cmFpbC9TQVAtTGFuZHNjYXBlLU1hbmFnZXIuZ2l0aHViLmlvL3ZpdGUuY29uZmlnLmpzXCI7Ly8gbnBtIGkgQHR5cGVzL25vZGUgLURcclxuaW1wb3J0IHsgcmVzb2x2ZSB9IGZyb20gJ3BhdGgnXHJcbmltcG9ydCB7IGRlZmluZUNvbmZpZyB9IGZyb20gJ3ZpdGUnXHJcbmltcG9ydCByZWFjdCBmcm9tICdAdml0ZWpzL3BsdWdpbi1yZWFjdCdcclxuXHJcblxyXG5jb25zdCByb290ID0gIHJlc29sdmUoX19kaXJuYW1lLCAnc3JjJylcclxuY29uc3Qgb3V0RGlyID0gcmVzb2x2ZShfX2Rpcm5hbWUsICdwdWJsaWMnKVxyXG4vLyBodHRwczovL3ZpdGVqcy5kZXYvY29uZmlnL1xyXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xyXG4gIHJvb3QsXHJcbiAgcGx1Z2luczogW3JlYWN0KCldLFxyXG4gIGJ1aWxkOntcclxuICAgIG91dERpcjogJ2Rpc3QnLFxyXG4gICAgY2h1bmtTaXplV2FybmluZ0xpbWl0OjE2MDAsXHJcbiAgICAvLyBlbXB0eU91dERpcjogdHJ1ZSxcclxuICAgIHJvbGx1cE9wdGlvbnM6IHtcclxuICAgICAgaW5wdXQ6IHtcclxuICAgICAgICBtYWluOiByZXNvbHZlKHJvb3QsICdpbmRleC5odG1sJyksXHJcbiAgICAgICAgc3RhdGlzdGljczogcmVzb2x2ZShyb290LCAnc3RhdGlzdGljcycsJ2luZGV4Lmh0bWwnKSxcclxuICAgICAgICBsb2dzOiByZXNvbHZlKHJvb3QsICdsb2dzJywnaW5kZXguaHRtbCcpLFxyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgfVxyXG59KVxyXG4iXSwKICAibWFwcGluZ3MiOiAiO0FBQ0EsU0FBUyxlQUFlO0FBQ3hCLFNBQVMsb0JBQW9CO0FBQzdCLE9BQU8sV0FBVztBQUhsQixJQUFNLG1DQUFtQztBQU16QyxJQUFNLE9BQVEsUUFBUSxrQ0FBVyxLQUFLO0FBQ3RDLElBQU0sU0FBUyxRQUFRLGtDQUFXLFFBQVE7QUFFMUMsSUFBTyxzQkFBUSxhQUFhO0FBQUEsRUFDMUI7QUFBQSxFQUNBLFNBQVMsQ0FBQyxNQUFNLENBQUM7QUFBQSxFQUNqQixPQUFNO0FBQUEsSUFDSixRQUFRO0FBQUEsSUFDUix1QkFBc0I7QUFBQTtBQUFBLElBRXRCLGVBQWU7QUFBQSxNQUNiLE9BQU87QUFBQSxRQUNMLE1BQU0sUUFBUSxNQUFNLFlBQVk7QUFBQSxRQUNoQyxZQUFZLFFBQVEsTUFBTSxjQUFhLFlBQVk7QUFBQSxRQUNuRCxNQUFNLFFBQVEsTUFBTSxRQUFPLFlBQVk7QUFBQSxNQUN6QztBQUFBLElBQ0Y7QUFBQSxFQUNGO0FBQ0YsQ0FBQzsiLAogICJuYW1lcyI6IFtdCn0K

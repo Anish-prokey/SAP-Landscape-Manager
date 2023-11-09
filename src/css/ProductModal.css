@@ -1,0 +1,106 @@
+/* Modal Box Styles */
+.modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: scroll;
+    height: 100%;
+    display: block;
+    background-color: #fff; /* Assuming you want a white background */
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    transform: translate(-50%, -50%);
+ 
+    /* Responsive widths */
+    width: 200px;
+ 
+    @media(min-width: 340px) {
+        width: 310px;
+    }
+ 
+    @media(min-width: 460px) {
+        width: 420px;
+    }
+ 
+    @media(min-width: 760px) {
+        width: 700px;
+    }
+ 
+    @media(min-width: 1000px) {
+        width: 920px;
+    }
+ 
+    @media(min-width: 1200px) {
+        width: 1120px;
+    }
+ 
+    @media(min-width: 1600px) {
+        width: 1520px;
+    }
+}
+ 
+/* System ID Styles */
+.sap-system-id {
+    text-align: center;
+    color: #002554;
+    font-weight: bold;
+}
+ 
+/* Table Styles - Feel free to modify as per your preferences */
+.sap-system-table {
+    width: 100%; /* Making table full width */
+    border-collapse: collapse;
+}
+ 
+.sap-system-table th, .sap-system-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+ 
+.sap-system-table .version-column {
+    font-weight: bold;
+    /* You might want other styles specific to this column */
+}
+ 
+/* Version Status Indicators Styles */
+.indications-style {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+ 
+.circle-style {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+ 
+.circle-style.green {
+    background-color: green;
+}
+ 
+.circle-style.red {
+    background-color: red;
+}
+.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+ 
+  .indications {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }

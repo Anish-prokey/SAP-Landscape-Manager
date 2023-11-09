@@ -10,28 +10,29 @@ const bodyParser = require('body-parser')
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
+ 
+ 
+ 
 // Generate PDF and Excel files from static table data and send them as attachments via email
 app.post('/generate-and-send', async (req, res) => {
-  const { recipientEmail, fileFormat } = req.body;
-
+  const { recipientEmail, fileFormat, filteredData } = req.body;
+  // app.get('https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/LandscapeDetailsSet?sap-client=100')
+  console.log(filteredData);
   try {
     // Read table data from JSON file
-    const tableDataPath = path.join(__dirname, './table.json');
-    const rawData = fs.readFileSync(tableDataPath);
-    const tableData = JSON.parse(rawData);
-
+   
+ 
     const tempDir = path.join(__dirname, 'temp');
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
     }
-
+    console.log(tempDir)
+    const tableData = filteredData;
+ 
     let attachmentPath, attachmentType;
     if (fileFormat === 'pdf') {
       // Generate PDF
-      attachmentPath = path.join(tempDir, 'table.pdf');
+     
       const pdfDoc = new pdfkit();
       pdfDoc.text('SAP Landscape Table\n\n');
       // pdfDoc.font('Helvetica-Bold');
@@ -43,10 +44,12 @@ app.post('/generate-and-send', async (req, res) => {
       // pdfDoc.text('\tDoes it run on a Hana database', { continued: true, underline: true });
       // pdfDoc.text('\tHANA', { underline: true });
       // pdfDoc.moveDown(0.5);
-
+ 
       // pdfDoc.font('Helvetica');
+      attachmentPath = path.join(tempDir, 'table.pdf');
       tableData.forEach((row, index) => {
-        pdfDoc.text(`${row.sap_prod}\t${row.sap_sys_id}\t${row.sys_desc}\t${row.Type}\t${row.Environment}\t${row.run_hana}\t${row.HANA}\n`);
+        console.log(row.Sapproduct, " ", row.Systype)
+        pdfDoc.text(`${row.Sysid} ${row.Systype} ${row.Runhdb} ${row.Sapproduct}\n`);
         // pdfDoc.text(`${row.sap_prod}`, { continued: true });
         // pdfDoc.text('\t');
         // pdfDoc.text(`${row.sap_sys_id}`, { continued: true });
@@ -64,7 +67,7 @@ app.post('/generate-and-send', async (req, res) => {
         // pdfDoc.moveTo(0, pdfDoc.y + 10)
         //   .lineTo(pdfDoc.page.width, pdfDoc.y + 10)
         //   .stroke();
-
+ 
         // // Move down to the next line
         // if (index !== tableData.length - 1) {
         //   pdfDoc.moveDown();
@@ -76,13 +79,16 @@ app.post('/generate-and-send', async (req, res) => {
     } else if (fileFormat === 'excel') {
       // Generate Excel
       attachmentPath = path.join(tempDir, 'table.xlsx');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Sheet 1');
       worksheet.columns = [
         { header: 'SAP Product', key: 'Sapproduct', width: 20 },
         { header: 'SAP System ID', key: 'Sysid', width: 20 },
         // { header: 'System Description', key: 'sys_desc', width: 30 },
-        { header: 'Type', key: 'Type', width: 20 },
+        { header: 'Type', key: 'Systype', width: 20 },
         // { header: 'Environment', key: 'Environment', width: 30 },
         { header: 'Does it run on a Hana database', key: 'Runhdb', width: 30 },
         // { header: 'HANA', key: 'HANA', width: 20 },
@@ -91,11 +97,12 @@ app.post('/generate-and-send', async (req, res) => {
         worksheet.addRow(row);
       });
       await workbook.xlsx.writeFile(attachmentPath);
+      // await workbook.xlsx.writeFile(attachmentPath);
       attachmentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     } else {
       throw new Error('Invalid file format');
     }
-
+ 
     // Send email with generated file as attachment
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -105,7 +112,7 @@ app.post('/generate-and-send', async (req, res) => {
         pass: 'ozlenukwwdvfqucn',
       },
     });
-
+    console.log("reached here");
     const mailOptions = {
       from: 'spsr7109@gmail.com',
       to: recipientEmail,
@@ -113,116 +120,21 @@ app.post('/generate-and-send', async (req, res) => {
       text: 'Please find the attached file with table data.',
       attachments: [
         {
-          filename: `table.${fileFormat}`,
+          filename: `table.${fileFormat === "excel" ? "xlsx" : "pdf"}`,
           path: attachmentPath,
           contentType: attachmentType,
         },
       ],
     };
-
+ 
     await transporter.sendMail(mailOptions);
-
+ 
     // Delete temporary file
     fs.unlinkSync(attachmentPath);
-
+ 
     res.json({ message: 'sent' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
-// app.get('/api/tables/:sapSystemId', async (req, res) => {
-//   const { sapSystemId } = req.params;
-
-//   // Load the Excel file
-//   const workbook = new ExcelJS.Workbook();
-//   await workbook.xlsx.readFile('productinfo.xlsx');
-
-//   // Get the worksheet with the data
-//   const worksheet = workbook.getWorksheet('Sheet1');
-
-//   const rows = [];
-//   worksheet.eachRow((row, rowNumber) => {
-//     if (rowNumber !== 1 && row.getCell(1).value === sapSystemId) {
-//       const rowData = {
-//         SystemID: row.getCell(1).value,
-//         ProductName: row.getCell(2).value,
-//         Version: row.getCell(3).value,
-//         Description: row.getCell(4).value,
-//         ModifiedDate: row.getCell(5).value,
-//         ModifiedTime: row.getCell(6).value,
-//         InstalledYear: row.getCell(7).value,
-       
-//       };
-//       rows.push(rowData);
-//     }
-//   });
-
-//   res.json(rows);
-
-// });
-app.get('/api/tables/:sapSystemId', async (req, res) => {
-  const { sapSystemId } = req.params;
-
-  // Load the Excel file
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile('productinfo.xlsx');
-
-  // Get the worksheet with the data
-  const worksheet = workbook.getWorksheet('Sheet1');
-
-  const rows = [];
-  worksheet.eachRow((row, rowNumber) => {
-    if (rowNumber !== 1 && row.getCell(1).value === sapSystemId) {
-      const rowData = {
-        SystemID: row.getCell(1).value,
-        ProductName: row.getCell(2).value,
-        Version: row.getCell(3).value,
-        Description: row.getCell(4).value,
-        ModifiedDate: row.getCell(5).value,
-        ModifiedTime: row.getCell(6).value,
-        InstalledYear: row.getCell(7).value,
-        Status: row.getCell(8).value, // Assuming the status is in column 8
-      };
-      const date = new Date(rowData.ModifiedTime)
-      const hours = date.getUTCHours().toString().padStart(2, "0");
-      const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-      const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-      const formattedTime = `${hours}:${minutes}:${seconds}`;
-      rowData.ModifiedTime = formattedTime;
-      rowData.ModifiedDate = new Date(rowData.ModifiedDate).toISOString().substring(0,10)
-      rows.push(rowData);
-    }
-  });
-
-  res.json(rows);
-});
-
-
-// app.use(bodyParser.json());
-
-// let downloadCount = 0;
-// let shareCount = 0;
-
-// app.get('/api/downloadCount', (req, res) => {
-//   res.json({ count: downloadCount });
-// });
-
-// app.get('/api/shareCount', (req, res) => {
-//   res.json({ count: shareCount });
-// });
-
-// app.get('/api/downloadCount', (req, res) => {
-//   downloadCount++;
-//   res.json({ count: downloadCount });
-// });
-
-// app.get('/api/shareCount', (req, res) => {
-//   shareCount++;
-//   res.json({ count: shareCount });
-// });
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-

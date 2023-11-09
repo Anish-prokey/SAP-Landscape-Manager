@@ -3,14 +3,14 @@
   flex-direction: column;
   align-items: center;
 }
-
+ 
 .timeline {
   display: flex;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 20px;
 }
-
+ 
 .timeline-box {
   display: flex;
   justify-content: space-between;
@@ -22,15 +22,15 @@
   border-radius: 5px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
-
+ 
 .block {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-
-
-
+ 
+ 
+ 
 .square {
   position: relative;
   width: 100px;
@@ -47,7 +47,7 @@
   left: 75%; /* Adjust the horizontal position */
   transform: translate(10%, -4%); /* Center the square */
 }
-
+ 
 .square.down {
   position: relative;
   width: 100px;
@@ -64,24 +64,24 @@
   left: 35%; /* Adjust the horizontal position */
   transform: translate(90%, -4%); /* Center the square */
 }
-
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 .square.up {
   order: 1;
 }
-
+ 
 .square.down {
   order: 3;
 }
-
+ 
 .circle {
   width: 50px;
   height: 50px;
@@ -92,7 +92,7 @@
   align-items: center;
   justify-content: center;
 }
-
+ 
 .link {
   width: 2px;
   height: 150px;
@@ -100,19 +100,19 @@
   order: 2;
   transform: rotate(90deg);
 }
-
+ 
 .square.blank {
   background-color: transparent;
   border: none;
 }
-
+ 
 h3,
 h4,
 p {
   margin: 0;
   color: #fff;
 }
-
+ 
 p {
   margin: 0;
   color: #fff;
@@ -120,95 +120,95 @@ p {
 h3 {
   font-size: 16px;
 }
-
+ 
 h4 {
   font-size: 14px;
 }
-
+ 
 p {
   font-size: 12px;
   margin-top: 5px;
 }
-
+ 
 .activated {
   position: relative;
   background-color: #0abe03;
   border-color: #000000;
 }
-
-
+ 
+ 
 /* Media Query for Small Screens */
 @media (max-width: 576px) {
   .timeline-box {
     flex-direction: column;
     padding: 20px;
   }
-
+ 
   .square {
     width: 80px;
     height: 80px;
     font-size: 12px;
   }
-
+ 
   .circle {
     width: 40px;
     height: 40px;
     font-size: 10px;
   }
-
+ 
   .link {
     width: 2px;
     height: 40px;
   }
-
+ 
   h3 {
     font-size: 14px;
   }
-
+ 
   h4 {
     font-size: 12px;
   }
-
+ 
   p {
     font-size: 10px;
   }
 }
-
-
+ 
+ 
 ul {
   background-color: #EDF3F9;
   text-align: center;
 }
-
+ 
 .nav {
   background-color: #EDF3F9;
   text-align: center;
 }
-
+ 
 .nav-link {
   color: #002554;
   margin-top: 2rem;
   padding: 0.4rem;
   font-weight: bold;
 }
-
+ 
 .nav-link:hover {
   background-color: #002554;
   color: #EDF3F9;
   padding: 0.4rem;
 }
-
+ 
 .form-text {
   color: #53565A;
 }
-
+ 
 .logo {
   width: 12rem;
   height: 6rem;
   cursor: pointer;
   margin-left: 1rem;
 }
-
+ 
 .profile_logo {
   justify-content: end;
   width: 3rem;
@@ -216,68 +216,68 @@ ul {
   margin-top: 1.5rem;
   cursor: pointer;
 }
-
+ 
 .navbar-nav .nav-link.active {
   background-color: #002554;
   color: #EDF3F9;
   padding: 0.4rem;
 }
-
+ 
 .table-responsive {
   max-height: 15rem;
 }
-
+ 
 .table_container {
   justify-content: center;
 }
-
+ 
 table {
   margin: 0 auto;
 }
-
+ 
 a {
   text-decoration: none;
   color: #506B67;
   float: left;
 }
-
+ 
 a:hover {
   color: #809E9B;
 }
-
+ 
 a:not([href]):not([class]) {
   color: #506B67;
   text-decoration: none;
 }
-
+ 
 a:not([href]):not([class]):hover {
   color: #809E9B;
   cursor: pointer;
 }
-
+ 
 td,
 th {
   padding: 5px 20px;
   color: #002554;
   text-align: center;
 }
-
+ 
 .send_form {
   padding-left: 8rem;
   padding-right: 5rem;
 }
-
+ 
 .sub_btn {
   background-color: #EDF3F9;
   color: #002554;
   font-weight: 500;
 }
-
+ 
 .sub_btn:hover {
   background-color: #002554;
   color: #EDF3F9;
 }
-
+ 
 .form-control {
   border: 0px;
   color: #002554;
@@ -285,14 +285,19 @@ th {
   border: 2px solid #809E9B;
   outline: none;
 }
-
+ 
 .form-control:focus {
   outline: none;
   box-shadow: none;
   color: #002554;
   border: 2px solid #506B67;
 }
-
+ 
 .form-control::placeholder {
   color: #002554;
+  position: relative;
+}
+.center-input {
+  width: 350px; /* Set the width to whatever value you desire */
+  /* This will center the input within its parent div */
 }

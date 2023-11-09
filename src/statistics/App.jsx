@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import '../css/Home.css';
 import axios from 'axios';
-// import data from './productData.json';
+
 
 export default function App() {
   const [activeNavItem, setActiveNavItem] = useState('statistics');
@@ -18,7 +18,7 @@ export default function App() {
     const fetchData = async () => {
       try {
 
-        const response3 = await axios.get(`https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/SysDetailsSet?sap-client=100`, {
+        const response3 = await axios.get(import.meta.env.VITE_API, {
         headers: {
 
           'Content-Type': 'application/json',
@@ -26,50 +26,67 @@ export default function App() {
           'Access-Control-Allow-Origin': '*',
 
           'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-
-          // 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         },
 
         withCredentials: true,
         auth: {
-          ususername: 'JA',
-          password: 'AOat1234',
+          username: import.meta.env.VITE_NAME,
+          password: import.meta.env.VITE_PASS,
         },
       });
-        // const response = await fetch('https://api.npoint.io/b27397e82bbf3a321651');
-        // setData(response3.data.d.results);
-        // console.log(response3.data.d.results);
-        // if (response3.ok) {
-        //   const data = await response3.data.d.results.json();
-          
-          // console.log(data);
+        
           response3.data.d.results.forEach((item) => {
-            if (!groupedSystems[item.Name]) {
-              groupedSystems[item.Name] = [];
+            const key = item.Name;
+          
+            if (!groupedSystems[key]) {
+              groupedSystems[key] = {};
             }
           
-            // Check if the item already exists in the array before pushing
-            const existingItemIndex = groupedSystems[item.Name].findIndex(
-              (existingItem) => existingItem.Sysid === item.Sysid
-            );
+            const sysid = item.Sysid;
           
-            if (existingItemIndex === -1) {
-              groupedSystems[item.Name].push(item);
+            if (!groupedSystems[key][sysid]) {
+              groupedSystems[key][sysid] = { ...item };
+            } else {
+              const existingItem = groupedSystems[key][sysid];
+              // Check if Inststatus is different, and if so, append the new Inststatus to Inststatus2
+              if (item.Inststatus !== existingItem.Inststatus) {
+                existingItem.Inststatus2 = existingItem.Inststatus2
+                  ? `${existingItem.Inststatus2}, ${item.Inststatus}`
+                  : item.Inststatus;
+              }
+              // Check if Version is different, and if so, append the new Version to Version2
+              if (item.Version !== existingItem.Version) {
+                existingItem.Version2 = existingItem.Version2
+                  ? `${existingItem.Version2}, ${item.Version}`
+                  : item.Version;
+              }
+              
             }
+          });
+          
+          // Transform the grouped data into an array
+          const groupedSystemsArray = Object.entries(groupedSystems).map(([Name, items]) => {
+            const mergedItems = Object.values(items);
+            return {
+              Name,
+               mergedItems,
+            };
           });
           
           setSystems(groupedSystems);
           
-          console.log(groupedSystems);
-        // } else {
-        //   // console.log(groupedSystems);
-        //   console.error('Failed to fetch systems:', response3.status);
-        // }
+          
+          
+          
+          
+          
+         
+     
       } catch (error) {
         console.error('Error fetching systems:', error);
       }
     };
-      // console.log(groupedSystems);
+
     fetchData();
   }, []);
 
@@ -77,79 +94,67 @@ export default function App() {
     setActiveNavItem(navItem);
   };
 
-  // const handleSystemChange = (event) => {
-  //   setSelectedSystem(event.target.value);
-  // };
+
   
   const HorizontalTimeline = ({ timelines }) => {
     useEffect(() => {
-      timelines.forEach((timeline, index) => {
-        const timelineElement = document.getElementById(`horizontal-timeline-${index}`);
-        if (timelineElement) {
-          activation(timelineElement);
-        }
-      });
+      
     }, [timelines]);
-    console.log(timelines);
-    const activation = (timelineElement) => {
-      const divs = timelineElement.querySelectorAll('div');
-      for (let i = 0; i < divs.length; i++) {
-        if (divs[i].classList.contains('circle') || divs[i].classList.contains('link')) {
-          divs[i].style.background = '#05A5D1';
-          if (divs[i].classList.contains('activated')) {
-            break;
-          }
-        }
-      }
-    };
-    // console.log(timelines);
+  
     return (
       <div className="timeline-container">
-        {timelines.map((timeline, index) => (
-          <div className="timeline horizontal reverse" key={index}>
-            <div className="timeline-box">
-              <div className="block">
-                <div className="square up">
-                  <h3>{timeline.Sysid}</h3>
-                  <h4></h4>
-                  <p>
-                  <b>Version: {timeline.Inststatus === '-' ? timeline.Version : 'NA'}</b>
-                  </p>
+        {timelines &&
+          Object.entries(timelines).map(([sysid, timeline], index) => (
+            <div className="timeline horizontal reverse" key={index}>
+              <div className="timeline-box">
+                <div className="block">
+                  <div className="square up">
+                    <h3>{sysid}</h3>
+                    <h4></h4>
+                    <p>
+                    <b>Version: {timeline.Inststatus === '-' ? timeline.Version : timeline.Inststatus2 === '-' ? timeline.Version2 : 'NA'}
+</b>
+
+                    </p>
+                  </div>
+                  <div className="circle">
+                    {timeline.Inststatus === '-' || timeline.Inststatus2 === '-' ? (
+                      <p>{timeline.ModDate.substring(0, 4)}</p>
+                    ) : (
+                      <p>NA</p>
+                    )}
+                  </div>
+                  <div className="link"></div>
+                  <div className="square down blank"></div>
                 </div>
-                <div className="circle">
-  {timeline.Inststatus === '-' ? (
-    <p>{timeline.ModDate.substring(0, 4)}</p>
-  ) : (
-    <p>NA</p>
-  )}
-</div>
-                <div className="link"></div>
-                <div className="square down blank"></div>
+                <div className="block">
+                  <div className="square up blank"></div>
+                  <div className="circle activated">
+                    {timeline.Inststatus === '+' || timeline.Inststatus2 === '+' ? (
+                      <p>{timeline.ModDate.substring(0, 4)}</p>
+                    ) : (
+                      <p>NA</p>
+                    )}
+                  </div>
+                  <div className="link"></div>
+                  <div className="square down">
+                    <h3>{sysid}</h3>
+                    <p>
+                    <b>Version: {timeline.Inststatus === '+' ? timeline.Version : timeline.Inststatus2 === '+' ? timeline.Version2 : 'NA'}
+</b>
+
+                    </p>
+                  </div>
+                </div>
+                <div id="end"></div>
               </div>
-              <div className="block">
-                <div className="square up blank"></div>
-                <div className="circle activated">
-                  {timeline.Inststatus==='+' ? ( <p>{timeline.ModDate.substring(0,4)}</p>)
-                  :(<p>NA</p>)}
-  
-                  {/* <p1>{timeline.ModDate}</p1> */}
-                </div>
-                <div className="link"></div>
-                <div className="square down">
-                  <h3>{timeline.Sysid}</h3>
-                  <p>
-                  <b>Version: {timeline.Inststatus === '+' ? timeline.Version : 'NA'}</b>
-                  </p>
-                </div>
-              </div>
-              <div id="end"></div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     );
   };
-
+  
+  
   const handleSystemChange = (event) => {
     setSelectedSystem(event.target.value);
   };
@@ -209,15 +214,7 @@ export default function App() {
                 </a>
               </li>
               <li className="nav-item">
-                {/* <a
-                  className={`nav-link mt-2 mx-5 ${
-                    activeNavItem === 'logs' ? 'active' : ''
-                  }`}
-                  onClick={() => handleNavItemClick('logs')}
-                  href="../logs/index.html"
-                >
-                  Logs
-                </a> */}
+                
               </li>
             </ul>
           </div>
@@ -226,10 +223,10 @@ export default function App() {
       <div className="d-flex justify-content-center">
         <div className="dropdown-container">
           <select value={selectedSystem} onChange={handleSystemChange}>
-            <option value={null}>Select SAP System ID</option>
+            <option value={null}>Select A Product</option>
             {Object.keys(systems).map((systemId, index) => (
               <option key={index} value={systemId}>
-                Product Name: {systemId}
+                {systemId}
               </option>
             ))}
           </select>
