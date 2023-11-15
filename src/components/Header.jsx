@@ -46,24 +46,6 @@ export default function Header() {
             </nav>
 
 
-            {/* <ul class="nav nav-pills nav-fill">
-                <li class="nav-item brand">
-                   <a href="https://www.tysonfoods.com/" target="_blank"> <img src={h_blue_logo} class="logo img-fluid rounded-top" alt="tyson logo" /></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link mt-4" aria-current="page" href="/">HANA Systems</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link mt-4" href="../statistics/index.html" >Statistics</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link mt-4" href="../logs/index.html">Logs</a>
-                </li>
-                <li class="nav-item">
-                    <img src={profile_logo} class="profile_logo rounded" alt="profile" />
-                </li>
-
-            </ul> */}
 
 
 

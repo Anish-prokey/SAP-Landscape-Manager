@@ -76,12 +76,6 @@ export default function App() {
           setSystems(groupedSystems);
           
           
-          
-          
-          
-          
-         
-     
       } catch (error) {
         console.error('Error fetching systems:', error);
       }

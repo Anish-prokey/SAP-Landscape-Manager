@@ -59,7 +59,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://sapd49.tyson.com/sap/opu/odata/sap/ZAPI_PRDVERS_SRV/LandscapeDetailsSet?sap-client=100', {
+        const response = await axios.get(import.meta.env.VITE_API, {
           headers: {
  
             'Content-Type': 'application/json',
@@ -74,8 +74,8 @@ export default function Home() {
           withCredentials: true,
           auth: {
  
-            username: 'ANISHO',
-            password: 'Atom@123',
+            username: import.meta.env.VITE_NAME,
+            password: import.meta.env.VITE_PASS,
           },
         });
         // setData(response.data.feed.entry.map((item) => ({
